@@ -9,6 +9,8 @@ services:
         condition: service_started
       mock-database:
         condition: service_started
+      selenium-hub:
+        condition: service_started
     working_dir: /opt/project
     environment:
       POSTGRES_HOST: mock-database
@@ -16,6 +18,7 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: mockdb
+      BROWSER: firefox
     volumes:
       - ./tests_lib:/opt/project/tests_lib
       - ./tests:/opt/project/tests
@@ -48,6 +51,46 @@ services:
 #      - ./database/empty.sql:/docker-entrypoint-initdb.d/init.sql
     expose:
       - "5432"
+
+  selenium-hub:
+    image: selenium/hub:latest
+    container_name: selenium-hub
+    ports:
+      - "4444:4444"
+    expose:
+      - "4444"
+      - "4443"
+      - "4442"
+    environment:
+      SE_EVENT_BUS_HOST: selenium-hub
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+
+  chrome:
+    image: selenium/node-chrome:latest
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium-hub
+    expose:
+      - "5555"
+    environment:
+      SE_EVENT_BUS_HOST: selenium-hub
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+
+  firefox:
+    image: selenium/node-firefox:latest
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium-hub
+    expose:
+      - "5555"
+    environment:
+      SE_EVENT_BUS_HOST: selenium-hub
+      SE_EVENT_BUS_PUBLISH_PORT: 4442
+      SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
 
 volumes:
   api_mock_certs:
