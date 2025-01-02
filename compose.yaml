@@ -10,6 +10,12 @@ services:
       mock-database:
         condition: service_started
     working_dir: /opt/project
+    environment:
+      POSTGRES_HOST: mock-database
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mockdb
     volumes:
       - ./tests_lib:/opt/project/tests_lib
       - ./tests:/opt/project/tests

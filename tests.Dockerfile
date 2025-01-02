@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.12
 USER root
 
 WORKDIR /opt/project
@@ -12,6 +12,7 @@ ENV MOCK_HOSTNAME=api-mock-server
 ENV PYTHONPATH="/opt/project"
 
 RUN pip install poetry
+
 
 # Installing dependencies and setup poetry env
 COPY poetry.lock        /opt/project/poetry.lock
