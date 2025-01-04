@@ -3,9 +3,6 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
-
-
-from tests_lib.helpers.json_loader import JSONLoader
 from tests_lib.web_ui.pages.login_page import LoginPage
 
 @pytest.fixture()
