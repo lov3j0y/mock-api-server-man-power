@@ -8,6 +8,12 @@ class CheckoutPage(BasePage):
     STEP_ONE_URL = "checkout-step-one.html"
     STEP_TWO_URL = "checkout-step-two.html"
     SUCCESS_MESSAGE = "Thank you for your order!"
+    ERROR_MESSAGES = {
+        "first_name": "Error: First Name is required",
+        "last_name": "Error: Last Name is required",
+        "postal_code": "Error: Postal Code is required"
+    }
+
 
     def __init__(self, driver):
         super().__init__(driver)
@@ -17,6 +23,7 @@ class CheckoutPage(BasePage):
         self.continue_button = (By.CSS_SELECTOR, ".cart_button")
         self.finish_button = (By.ID, "finish")
         self.complete_header = (By.CSS_SELECTOR, ".complete-header")
+        self.error_message = (By.CSS_SELECTOR, "[data-test='error']")
 
     def fill_checkout_form(self, first_name, last_name, postal_code):
         """Fill all checkout form fields at once."""
@@ -64,3 +71,10 @@ class CheckoutPage(BasePage):
             return self.get_text(self.complete_header) == self.SUCCESS_MESSAGE
         except TimeoutException:
             return False
+        
+    def get_error_message(self):
+        """Get form validation error message."""
+        try:
+            return self.get_text(self.error_message)
+        except TimeoutException:
+            return None

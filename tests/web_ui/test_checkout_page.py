@@ -4,13 +4,10 @@ from tests_lib.web_ui.base_test import BaseTest
 
 class TestCheckoutPage(BaseTest):
     """Test suite for checkout functionality."""
-    
-    # Test data constants
     FIRST_NAME = "John"
     LAST_NAME = "Doe"
     POSTAL_CODE = "12345"
-    EMPTY_FORM_ERROR = "Error: First Name is required"
-
+    
     @pytest.fixture
     def checkout_setup(self, setup, inventory_page, cart_page):
         """Setup checkout state with item in cart."""
@@ -54,3 +51,35 @@ class TestCheckoutPage(BaseTest):
         # Assert
         assert checkout_page.is_checkout_complete(), \
             "Checkout was not completed successfully"
+            
+            
+    def test_empty_form_validation(self, checkout_setup, checkout_page):
+        """Test validation message for completely empty form."""
+        # Act
+        checkout_page.click_continue()
+        
+        # Assert
+        assert checkout_page.get_error_message() == checkout_page.ERROR_MESSAGES["first_name"]
+
+    def test_missing_last_name_validation(self, checkout_setup, checkout_page):
+        """Test validation message when only first name is provided."""
+        # Arrange
+        checkout_page.enter_first_name(self.FIRST_NAME)
+        
+        # Act
+        checkout_page.click_continue()
+        
+        # Assert
+        assert checkout_page.get_error_message() == checkout_page.ERROR_MESSAGES["last_name"]
+
+    def test_missing_postal_code_validation(self, checkout_setup, checkout_page):
+        """Test validation message when postal code is missing."""
+        # Arrange
+        checkout_page.enter_first_name(self.FIRST_NAME)
+        checkout_page.enter_last_name(self.LAST_NAME)
+        
+        # Act
+        checkout_page.click_continue()
+        
+        # Assert
+        assert checkout_page.get_error_message() == checkout_page.ERROR_MESSAGES["postal_code"]
