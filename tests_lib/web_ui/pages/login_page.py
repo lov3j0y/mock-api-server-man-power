@@ -29,6 +29,12 @@ class LoginPage(BasePage):
     def click_login_button(self):
         """Click login button to submit form."""
         self.click(self.login_button)
+        
+    def login(self, username, password):
+        """ Perform login with given credentials. """
+        self.input_username(username)
+        self.input_password(password) 
+        self.click_login_button()
 
     def get_error_message(self):
         """Get login error message if present."""

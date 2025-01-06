@@ -1,11 +1,14 @@
 import os
 import pytest
-import logging
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
-from selenium.common.exceptions import WebDriverException
+from tests_lib.helpers.json_loader import JSONLoader
 from tests_lib.web_ui.pages.login_page import LoginPage
+from tests_lib.web_ui.pages.inventory_page import InventoryPage
+from tests_lib.web_ui.pages.cart_page import CartPage
+from tests_lib.web_ui.pages.checkout_page import CheckoutPage
+from tests_lib.web_ui.pages.hidden_menu_page import HiddenMenuPage
 
 
 class TestConfig:
@@ -15,35 +18,70 @@ class TestConfig:
     SELENIUM_HUB = "http://selenium-hub:4444"
 
 
-@pytest.fixture()
-def driver():
-    """Create WebDriver instance with configured options."""
-    browser = os.getenv("BROWSER", "firefox")
+class BaseTest:
+    """Base class for UI tests with common setup."""
     
-    if browser == "firefox":
-        options = FirefoxOptions()
-    elif browser == "chrome":
-        options = ChromeOptions()
-    else:
-        raise ValueError(f"Unsupported browser: {browser}")
+    def login(self, user_type="valid_user"):
+        """Login with specified user type."""
+        credentials = JSONLoader().load_data("test_data_webui_credentials.json", "credentials")
+        user = credentials[user_type]
+        
+        login_page = LoginPage(self.driver)
+        self.driver.get(TestConfig.BASE_URL)
+        login_page.input_username(user["username"])
+        login_page.input_password(user["password"])
+        login_page.click_login_button()
 
-    options.add_argument("--headless")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    
-    driver = webdriver.Remote(
-        command_executor=TestConfig.SELENIUM_HUB,
-        options=options        
-    )
-    driver.implicitly_wait(TestConfig.IMPLICIT_WAIT)
-    
-    yield driver
-    driver.quit()
+    @pytest.fixture
+    def setup(self, driver):
+        """Setup test with driver."""
+        self.driver = driver
+        return self.login
 
+    @pytest.fixture()
+    def driver(self):
+        """Create WebDriver instance."""
+        browser = os.getenv("BROWSER", "firefox")
+        
+        if browser == "firefox":
+            options = FirefoxOptions()
+        elif browser == "chrome":
+            options = ChromeOptions()
+        else:
+            raise ValueError(f"Unsupported browser: {browser}")
 
-def login(username, password, driver):
-    driver.get(TestConfig.BASE_URL)
-    login_page = LoginPage(driver)
-    login_page.input_username(username)
-    login_page.input_password(password)
-    login_page.click_login_button()
+        options.add_argument("--headless")
+        
+        driver = webdriver.Remote(
+            command_executor=TestConfig.SELENIUM_HUB,
+            options=options        
+        )
+        driver.implicitly_wait(TestConfig.IMPLICIT_WAIT)
+        
+        yield driver
+        driver.quit()
+
+    @pytest.fixture
+    def login_page(self):
+        """Create LoginPage instance."""
+        return LoginPage(self.driver)
+
+    @pytest.fixture 
+    def inventory_page(self):
+        """Create InventoryPage instance."""
+        return InventoryPage(self.driver)
+
+    @pytest.fixture
+    def cart_page(self):
+        """Create CartPage instance."""
+        return CartPage(self.driver)
+
+    @pytest.fixture
+    def checkout_page(self):
+        """Create CheckoutPage instance."""
+        return CheckoutPage(self.driver)
+
+    @pytest.fixture
+    def hidden_menu_page(self):
+        """Create HiddenMenuPage instance."""
+        return HiddenMenuPage(self.driver)

@@ -1,57 +1,56 @@
 import pytest
-from tests_lib.helpers.json_loader import JSONLoader
-from tests_lib.web_ui.pages.inventory_page import InventoryPage
-from tests_lib.web_ui.pages.cart_page import CartPage
-from tests_lib.web_ui.pages.checkout_page import CheckoutPage
-from tests_lib.web_ui.base_test import login, driver
+from tests_lib.web_ui.base_test import BaseTest
 
-CHECKOUT_STEP_ONE_URL = "https://www.saucedemo.com/checkout-step-two.html"
-CHECKOUT_COMPLETE_URL = "https://www.saucedemo.com/checkout-complete.html"
 
-@pytest.mark.usefixtures("driver")
-class TestCheckoutPage:
+class TestCheckoutPage(BaseTest):
+    """Test suite for checkout functionality."""
+    
+    # Test data constants
+    FIRST_NAME = "John"
+    LAST_NAME = "Doe"
+    POSTAL_CODE = "12345"
+    EMPTY_FORM_ERROR = "Error: First Name is required"
 
-    @pytest.fixture(autouse=True)
-    def setup(self, driver):
-        self.credentials = JSONLoader().load_data("test_data_webui_credentials.json", "credentials")
-        valid_user = self.credentials["valid_user"]
-        self.login_and_setup_checkout(valid_user["username"], valid_user["password"], driver)
-
-    def login_and_setup_checkout(self, username, password, driver):
-        """Helper method to login and setup checkout state"""
-        login(username, password, driver)
-        inventory_page = InventoryPage(driver)
+    @pytest.fixture
+    def checkout_setup(self, setup, inventory_page, cart_page):
+        """Setup checkout state with item in cart."""
+        setup()
         inventory_page.add_to_cart_by_index(0)
         inventory_page.click_cart_link()
-        cart_page = CartPage(driver)
         cart_page.click_checkout()
 
-    def test_checkout_page_loaded(self, driver):
+    def test_checkout_page_loaded(self, checkout_setup, checkout_page):
         """Test that checkout page loads correctly."""
-        checkout_page = CheckoutPage(driver)
-        assert checkout_page.is_page_loaded(), "Checkout page did not load correctly"
+        assert checkout_page.is_page_loaded(), \
+            "Checkout page did not load correctly"
 
-    def test_continue_to_next_step(self, driver):
+    def test_continue_to_next_step(self, checkout_setup, checkout_page):
         """Test that user can continue to next checkout step."""
-        checkout_page = CheckoutPage(driver)
-        checkout_page.enter_first_name("John")
-        checkout_page.enter_last_name("Doe")
-        checkout_page.enter_postal_code("12345")
+        # Act
+        checkout_page.fill_checkout_form(
+            self.FIRST_NAME,
+            self.LAST_NAME,
+            self.POSTAL_CODE
+        )
         checkout_page.click_continue()
-        
-        assert CHECKOUT_STEP_ONE_URL in driver.current_url, \
-            "Failed to proceed to next checkout step"
 
-    def test_complete_order(self, driver):
-        """Test complete checkout process."""
-        checkout_page = CheckoutPage(driver)
-        checkout_page.enter_first_name("John")
-        checkout_page.enter_last_name("Doe")
-        checkout_page.enter_postal_code("12345")
+        # Assert
+        assert "checkout-step-two.html" in self.driver.current_url, \
+            "Not redirected to next checkout step"
+
+    def test_complete_checkout(self, checkout_setup, checkout_page):
+        """Test complete checkout flow."""
+        # Arrange
+        checkout_page.fill_checkout_form(
+            self.FIRST_NAME,
+            self.LAST_NAME,
+            self.POSTAL_CODE
+        )
         checkout_page.click_continue()
+
+        # Act
         checkout_page.click_finish()
 
-        assert CHECKOUT_COMPLETE_URL in driver.current_url, \
-            "Failed to reach order completion page"
+        # Assert
         assert checkout_page.is_checkout_complete(), \
-            "Order completion message not displayed"
+            "Checkout was not completed successfully"
