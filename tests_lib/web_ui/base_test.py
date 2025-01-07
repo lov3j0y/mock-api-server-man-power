@@ -3,36 +3,30 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from tests_lib.common.logger.log_level import LogLevel
+from tests_lib.common.logger.logger import LogManager
 from tests_lib.helpers.json_loader import JSONLoader
 from tests_lib.web_ui.pages.login_page import LoginPage
 from tests_lib.web_ui.pages.inventory_page import InventoryPage
 from tests_lib.web_ui.pages.cart_page import CartPage
 from tests_lib.web_ui.pages.checkout_page import CheckoutPage
 from tests_lib.web_ui.pages.hidden_menu_page import HiddenMenuPage
-from tests_lib.common.logger.logger import logger, LogLevel
-
-
-class TestConfig:
-    """Test configuration constants."""
-    BASE_URL = "https://www.saucedemo.com/"
-    IMPLICIT_WAIT = 10
-    SELENIUM_HUB = "http://selenium-hub:4444"
-    LOGGER_NAME = "ui_tests"
-    LOG_LEVEL = LogLevel.INFO
+from tests_lib.web_ui.config.web_ui_config import WebUIConfig
 
 
 class BaseTest:
     """Base class for UI tests with common setup."""
-            
     @pytest.fixture(autouse=True)
-    def setup_logger(self):
-        """Initialize logger for test class."""
-        self.logger = logger(TestConfig.LOGGER_NAME, TestConfig.LOG_LEVEL)
+    def setup(self):
+        """Setup method to initialize the logger."""
+        log_manager = LogManager()
+        self.logger = log_manager.get_logger("base_test", LogLevel.INFO)
+        self.logger.info("Logger initialized")
         yield
-        self.logger.info("Test completed")
+        self.logger.info("Test finished")
     
     @pytest.fixture()
-    def driver(self, setup_logger):
+    def driver(self):
         """Create WebDriver instance."""
         browser = os.getenv("BROWSER", "firefox")
         
@@ -46,10 +40,10 @@ class BaseTest:
         options.add_argument("--headless")
         
         driver = webdriver.Remote(
-            command_executor=TestConfig.SELENIUM_HUB,
+            command_executor=WebUIConfig.SELENIUM_HUB,
             options=options        
         )
-        driver.implicitly_wait(TestConfig.IMPLICIT_WAIT)
+        driver.implicitly_wait(WebUIConfig.IMPLICIT_WAIT)
         
         yield driver
         driver.quit()
@@ -61,7 +55,7 @@ class BaseTest:
         user = credentials[user_type]
         
         login_page = LoginPage(self.driver)
-        self.driver.get(TestConfig.BASE_URL)
+        self.driver.get(WebUIConfig.BASE_URL)
         login_page.input_username(user["username"])
         login_page.input_password(user["password"])
         login_page.click_login_button()

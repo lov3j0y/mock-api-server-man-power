@@ -1,0 +1,7 @@
+web_ui:
+  base_url: "https://www.saucedemo.com/"
+  implicit_wait: 10
+  selenium_hub: "http://selenium-hub:4444"
+  logger:
+    name: "ui_tests"
+    level: "INFO"

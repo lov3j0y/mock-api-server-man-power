@@ -1,4 +1,4 @@
-from tests_lib.web_ui.base_test import BaseTest, TestConfig
+from tests_lib.web_ui.base_test import BaseTest, WebUIConfig
 
 
 class TestHiddenMenu(BaseTest):
@@ -26,5 +26,5 @@ class TestHiddenMenu(BaseTest):
         hidden_menu_page.click_logout_button()
         
         # Assert
-        assert self.driver.current_url == TestConfig.BASE_URL, \
+        assert self.driver.current_url == WebUIConfig.BASE_URL, \
             "User not redirected to login page after logout"

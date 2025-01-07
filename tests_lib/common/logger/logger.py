@@ -1,38 +1,26 @@
 import logging
-from enum import Enum
-from pathlib import Path
+from tests_lib.common.logger.base_logger import BaseLogger
 
-LOGS_DIR = Path(__file__).resolve().parent.parent.parent.parent / "logs"
-LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-DATE_FORMAT = "%m/%d/%Y %I:%M:%S%p"
-
-class LogLevel(Enum):
-    """Logging levels enumeration."""
-    DEBUG = logging.DEBUG  # 10
-    INFO = logging.INFO  # 20
-    WARNING = logging.WARNING  # 30
-    ERROR = logging.ERROR  # 40
-    CRITICAL = logging.CRITICAL  # 50
-
-def logger(name, level):
-    """
-    Create a logger that writes to a file in the logs directory.
+class LogManager(BaseLogger):
+    """Class to manage logging configuration and creation."""
     
-    Args:
-        name: Name of the logger and log file
-        level: Minimum log level to record
-    """
+    def get_logger(self, name, level):
+        """
+        Create a logger that writes to a file in the logs directory.
+        
+        Args:
+            name: Name of the logger and log file
+            level: Minimum log level to record
+        """
+        logger = logging.getLogger(f"__{name}__")
+        logger.setLevel(level.value)
+        
+        log_file = self.LOGS_DIR / f"{name}_run.log"
+        file_handler = logging.FileHandler(log_file)
+        file_handler.setLevel(level.value)
 
-    # Create logger
-    logger = logging.getLogger(f"__{name}__")
-    logger.setLevel(level.value)
-    log_file = LOGS_DIR / f"{name}_run.log"
-    file_handler = logging.FileHandler(log_file)
-    file_handler.setLevel(level.value)
-
-    # Setup formatter
-    formatter = logging.Formatter(LOG_FORMAT, datefmt=DATE_FORMAT)
-    file_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
-
-    return logger
+        formatter = logging.Formatter(self.LOG_FORMAT, datefmt=self.DATE_FORMAT)
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+        
+        return logger
