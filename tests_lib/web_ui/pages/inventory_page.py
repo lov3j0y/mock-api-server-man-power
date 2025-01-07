@@ -6,8 +6,8 @@ class InventoryPage(BasePage):
     PRODUCTS_TITLE = "Products"
     INVENTORY_PATH = "inventory.html"
     
-    def __init__(self, driver):
-        super().__init__(driver)
+    def __init__(self, driver, logger):
+        super().__init__(driver, logger)
         self.cart_link = (By.CSS_SELECTOR, ".shopping_cart_link")
         self.products_title = (By.CLASS_NAME, "title")
         self.inventory_items = (By.CSS_SELECTOR, ".inventory_item")

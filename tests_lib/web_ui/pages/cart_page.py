@@ -8,8 +8,8 @@ class CartPage(BasePage):
     CART_ITEM = (By.CSS_SELECTOR, ".cart_item")
     CHECKOUT_BUTTON = (By.CSS_SELECTOR, "#checkout")
 
-    def __init__(self, driver):
-        super().__init__(driver)
+    def __init__(self, driver, logger):
+        super().__init__(driver, logger)
         self.cart_item = self.CART_ITEM
         self.checkout_button = self.CHECKOUT_BUTTON
 

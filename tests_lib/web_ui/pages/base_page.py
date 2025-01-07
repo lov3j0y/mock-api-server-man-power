@@ -1,22 +1,20 @@
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
+from tests_lib.common.logger.base_logger import BaseLogger
+from tests_lib.web_ui.config.web_ui_config import WebUIConfig
 
 class BasePage:
     """Base class for all page objects."""
-    
-    TIMEOUT = 10
 
-    def __init__(self, driver):
+    def __init__(self, driver, logger):
         self.driver = driver
-        self.wait = WebDriverWait(driver, self.TIMEOUT)
+        self.wait = WebDriverWait(driver, WebUIConfig.IMPLICIT_WAIT)
+        self.logger = logger
 
     def find_element(self, by):
         """Find element with explicit wait."""
-        try:
-            return self.wait.until(EC.visibility_of_element_located(by))
-        except TimeoutException:
-            raise TimeoutException(f"Element not found: {by}")
+        return self.wait.until(EC.visibility_of_element_located(by))
 
     def find_elements(self, by):
         """Find multiple elements."""

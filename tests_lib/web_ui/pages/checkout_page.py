@@ -15,8 +15,8 @@ class CheckoutPage(BasePage):
     }
 
 
-    def __init__(self, driver):
-        super().__init__(driver)
+    def __init__(self, driver, logger):
+        super().__init__(driver, logger)
         self.first_name_field = (By.ID, "first-name")
         self.last_name_field = (By.ID, "last-name")
         self.postal_code_field = (By.ID, "postal-code")
@@ -27,29 +27,20 @@ class CheckoutPage(BasePage):
 
     def fill_checkout_form(self, first_name, last_name, postal_code):
         """Fill all checkout form fields at once."""
-        try:
-            self.enter_first_name(first_name)
-            self.enter_last_name(last_name)
-            self.enter_postal_code(postal_code)
-        except TimeoutException as e:
-            raise ValueError("Failed to fill checkout form - some fields might be missing") from e
+        self.enter_first_name(first_name)
+        self.enter_last_name(last_name)
+        self.enter_postal_code(postal_code)
 
     def enter_first_name(self, first_name):
         """Enter customer first name."""
-        if not first_name:
-            raise ValueError("First name cannot be empty")
         self.type(self.first_name_field, first_name)
 
     def enter_last_name(self, last_name):
         """Enter customer last name."""
-        if not last_name:
-            raise ValueError("Last name cannot be empty")
         self.type(self.last_name_field, last_name)
 
     def enter_postal_code(self, postal_code):
         """Enter customer postal code."""
-        if not postal_code:
-            raise ValueError("Postal code cannot be empty")
         self.type(self.postal_code_field, postal_code)
 
     def click_continue(self):

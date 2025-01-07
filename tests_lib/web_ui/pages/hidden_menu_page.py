@@ -9,8 +9,8 @@ class HiddenMenuPage(BasePage):
     LOGOUT_BUTTON = (By.ID, "logout_sidebar_link")
     MENU_CONTAINER = (By.CLASS_NAME, "bm-menu-wrap")
     
-    def __init__(self, driver):
-        super().__init__(driver)
+    def __init__(self, driver, logger):
+        super().__init__(driver, logger)
         self.menu_button = self.MENU_BUTTON
         self.logout_button = self.LOGOUT_BUTTON
         self.menu_container = self.MENU_CONTAINER
