@@ -22,6 +22,7 @@ services:
     volumes:
       - ./tests_lib:/opt/project/tests_lib
       - ./tests:/opt/project/tests
+      - ./logs:/opt/project/logs
       - api_mock_certs:/root/ca/rsa/volumed_dir
 #  infinite loop to run container
 #    entrypoint: ["sh", "-c", "while true; do sleep 1000; done"]

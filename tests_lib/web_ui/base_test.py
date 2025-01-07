@@ -9,6 +9,7 @@ from tests_lib.web_ui.pages.inventory_page import InventoryPage
 from tests_lib.web_ui.pages.cart_page import CartPage
 from tests_lib.web_ui.pages.checkout_page import CheckoutPage
 from tests_lib.web_ui.pages.hidden_menu_page import HiddenMenuPage
+from tests_lib.common.logger.logger import logger, LogLevel
 
 
 class TestConfig:
@@ -16,30 +17,22 @@ class TestConfig:
     BASE_URL = "https://www.saucedemo.com/"
     IMPLICIT_WAIT = 10
     SELENIUM_HUB = "http://selenium-hub:4444"
+    LOGGER_NAME = "ui_tests"
+    LOG_LEVEL = LogLevel.INFO
 
 
 class BaseTest:
     """Base class for UI tests with common setup."""
+            
+    @pytest.fixture(autouse=True)
+    def setup_logger(self):
+        """Initialize logger for test class."""
+        self.logger = logger(TestConfig.LOGGER_NAME, TestConfig.LOG_LEVEL)
+        yield
+        self.logger.info("Test completed")
     
-    def login(self, user_type="valid_user"):
-        """Login with specified user type."""
-        credentials = JSONLoader().load_data("test_data_webui_credentials.json", "credentials")
-        user = credentials[user_type]
-        
-        login_page = LoginPage(self.driver)
-        self.driver.get(TestConfig.BASE_URL)
-        login_page.input_username(user["username"])
-        login_page.input_password(user["password"])
-        login_page.click_login_button()
-
-    @pytest.fixture
-    def setup(self, driver):
-        """Setup test with driver."""
-        self.driver = driver
-        return self.login
-
     @pytest.fixture()
-    def driver(self):
+    def driver(self, setup_logger):
         """Create WebDriver instance."""
         browser = os.getenv("BROWSER", "firefox")
         
@@ -60,6 +53,25 @@ class BaseTest:
         
         yield driver
         driver.quit()
+
+    
+    def login(self, user_type="valid_user"):
+        """Login with specified user type."""
+        credentials = JSONLoader().load_data("test_data_webui_credentials.json", "credentials")
+        user = credentials[user_type]
+        
+        login_page = LoginPage(self.driver)
+        self.driver.get(TestConfig.BASE_URL)
+        login_page.input_username(user["username"])
+        login_page.input_password(user["password"])
+        login_page.click_login_button()
+
+    @pytest.fixture
+    def setup(self, driver):
+        """Setup test with driver."""
+        self.driver = driver
+        return self.login
+
 
     @pytest.fixture
     def login_page(self):
