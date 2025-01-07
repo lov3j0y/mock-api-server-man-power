@@ -13,6 +13,7 @@ selenium = "^4.27.1"
 python-dotenv = "^1.0.1"
 webdriver-manager = "^4.0.2"
 psycopg2 = "^2.9.10"
+pyyaml = "^6.0.2"
 
 
 [build-system]
