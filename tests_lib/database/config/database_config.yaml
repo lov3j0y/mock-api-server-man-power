@@ -1,0 +1,4 @@
+database:  
+  logger:
+    name: "database_tests"
+    level: "INFO"
