@@ -5,3 +5,10 @@ web_ui:
   logger:
     name: "ui_tests"
     level: "INFO"
+  browser:
+    default: firefox
+    options:
+      firefox:
+        - "--headless"
+      chrome:
+        - "--headless"

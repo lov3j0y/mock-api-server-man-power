@@ -12,3 +12,4 @@ class WebUIConfig:
     SELENIUM_HUB = _config["selenium_hub"]
     LOGGER_NAME = _config["logger"]["name"]
     LOG_LEVEL = LogLevel[_config["logger"]["level"]]
+    BROWSER = _config["browser"]
