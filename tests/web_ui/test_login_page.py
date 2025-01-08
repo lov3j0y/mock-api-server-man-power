@@ -22,7 +22,7 @@ class TestLoginPage(BaseTest):
         self.logger.info("Verifying successful login navigation")
         assert "inventory.html" in current_url
 
-    def test_login_with_invalid_credentials(self, setup, login_page):
+    def test_login_with_invalid_credentials(self, setup):
         """Test login failure with invalid credentials."""
         
         # Arrange
@@ -31,13 +31,13 @@ class TestLoginPage(BaseTest):
         
         # Act
         self.logger.info("Getting error message after failed login")
-        error_message = login_page.get_error_message()
+        error_message = self.pages.get_login_page().get_error_message()
         
         # Assert
         self.logger.info("Verifying error message for invalid credentials")
         assert self.INVALID_CREDENTIALS_ERROR in error_message
 
-    def test_login_with_locked_out_user(self, setup, login_page):
+    def test_login_with_locked_out_user(self, setup):
         """Test login attempt with locked out user."""
         
         # Arrange
@@ -46,7 +46,7 @@ class TestLoginPage(BaseTest):
         
         # Act
         self.logger.info("Getting error message after locked out user login attempt")
-        error_message = login_page.get_error_message()
+        error_message = self.pages.get_login_page().get_error_message()
         
         # Assert
         self.logger.info("Verifying locked out user error message")

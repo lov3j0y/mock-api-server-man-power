@@ -1,6 +1,6 @@
 import os
 import pytest
-from tests_lib.common.logger.logger import LogManager
+from tests_lib.web_ui.helpers.log_manager import LogManager
 from tests_lib.web_ui.config.web_ui_config import WebUIConfig
 from tests_lib.web_ui.helpers.browser_manager import BrowserManager
 from tests_lib.web_ui.factories.page_factory import PageFactory
@@ -11,7 +11,7 @@ class BaseTest:
         """Setup method to initialize the logger."""
         log_manager = LogManager()
         self.logger = log_manager.get_logger(WebUIConfig.LOGGER_NAME, WebUIConfig.LOG_LEVEL)
-        test_name = request.node.name
+        test_name = f"{request.cls.__name__}.{request.node.name}"
         self.logger.info(f"=== Starting test: {test_name} ===")
         yield self.logger
         self.logger.info(f"=== Completed test: {test_name} ===\n")
