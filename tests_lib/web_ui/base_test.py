@@ -20,7 +20,12 @@ class BaseTest:
         """Setup method to initialize the logger."""
         log_manager = LogManager()
         self.logger = log_manager.get_logger(WebUIConfig.LOGGER_NAME, WebUIConfig.LOG_LEVEL)
-    
+        yield self.logger
+        # Cleanup handlers to prevent duplication
+        for handler in self.logger.handlers[:]:
+            handler.close()
+            self.logger.removeHandler(handler)
+            
     @pytest.fixture()
     def driver(self):
         """Create WebDriver instance."""

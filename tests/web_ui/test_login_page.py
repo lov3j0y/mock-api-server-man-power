@@ -9,26 +9,51 @@ class TestLoginPage(BaseTest):
 
     def test_login_with_valid_credentials(self, setup):
         """Test successful login with valid credentials."""
-        # Arrange & Act
+        self.logger.info("=== Starting test_login_with_valid_credentials ===")
+        
+        # Arrange
+        self.logger.info("Arranging test data for valid user login")
         setup("valid_user")
         
+        # Act
+        self.logger.info("Performing login action")
+        current_url = self.driver.current_url
+        
         # Assert
-        assert "inventory.html" in self.driver.current_url
+        self.logger.info("Verifying successful login navigation")
+        assert "inventory.html" in current_url
+        self.logger.info("=== Completed test_login_with_valid_credentials ===")
 
     def test_login_with_invalid_credentials(self, setup, login_page):
         """Test login failure with invalid credentials."""
-        # Arrange & Act  
+        self.logger.info("=== Starting test_login_with_invalid_credentials ===")
+        
+        # Arrange
+        self.logger.info("Arranging test data for invalid user login")
         setup("invalid_user")
         
-        # Assert
+        # Act
+        self.logger.info("Getting error message after failed login")
         error_message = login_page.get_error_message()
+        
+        # Assert
+        self.logger.info("Verifying error message for invalid credentials")
         assert self.INVALID_CREDENTIALS_ERROR in error_message
+        self.logger.info("=== Completed test_login_with_invalid_credentials ===")
 
     def test_login_with_locked_out_user(self, setup, login_page):
         """Test login attempt with locked out user."""
-        # Arrange & Act
+        self.logger.info("=== Starting test_login_with_locked_out_user ===")
+        
+        # Arrange
+        self.logger.info("Arranging test data for locked out user")
         setup("locked_out_user")
         
-        # Assert
+        # Act
+        self.logger.info("Getting error message after locked out user login attempt")
         error_message = login_page.get_error_message()
+        
+        # Assert
+        self.logger.info("Verifying locked out user error message")
         assert self.LOCKED_OUT_ERROR in error_message
+        self.logger.info("=== Completed test_login_with_locked_out_user ===")
