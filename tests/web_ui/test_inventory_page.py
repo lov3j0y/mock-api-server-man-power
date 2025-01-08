@@ -1,11 +1,10 @@
 from tests_lib.web_ui.base_test import BaseTest
+from tests_lib.web_ui.pages.inventory_page import InventoryPage
 
 
 class TestInventoryPage(BaseTest):
     """Test suite for inventory page functionality."""
     
-    PRODUCT_NAME = "Sauce Labs Backpack"
-
     def test_inventory_display(self, login_page, inventory_page):
         """Test that inventory items are displayed."""
                 
@@ -15,8 +14,7 @@ class TestInventoryPage(BaseTest):
         
         # Assert
         self.logger.info("Verifying inventory items are displayed")
-        assert inventory_page.is_inventory_displayed(), \
-            "Inventory items are not displayed"
+        assert inventory_page.is_inventory_displayed()
 
     def test_add_to_cart_by_index(self, login_page, inventory_page, cart_page):
         """Test adding item to cart by index."""
@@ -33,8 +31,7 @@ class TestInventoryPage(BaseTest):
 
         # Assert
         self.logger.info("Verifying item was added to cart")
-        assert cart_page.is_cart_item_displayed(), \
-            "Item was not added to cart"
+        assert cart_page.is_cart_item_displayed()
 
     def test_add_to_cart_by_name(self, login_page, inventory_page):
         """Test adding item to cart by name."""
@@ -44,5 +41,5 @@ class TestInventoryPage(BaseTest):
         login_page.login_as("valid_user")
         
         # Act
-        self.logger.info(f"Adding item '{self.PRODUCT_NAME}' to cart")
-        inventory_page.add_to_cart_by_name(self.PRODUCT_NAME)
+        self.logger.info(f"Adding item '{InventoryPage.PRODUCT_BACKPACK_NAME}' to cart")
+        inventory_page.add_to_cart_by_name(InventoryPage.PRODUCT_BACKPACK_NAME)

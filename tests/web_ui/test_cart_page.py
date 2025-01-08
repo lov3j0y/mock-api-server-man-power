@@ -1,5 +1,6 @@
 import pytest
 from tests_lib.web_ui.base_test import BaseTest
+from tests_lib.web_ui.pages.checkout_page import CheckoutPage
 
 
 class TestCartPage(BaseTest):
@@ -23,8 +24,7 @@ class TestCartPage(BaseTest):
         self.logger.info("Verifying cart item visibility")
         
         # Assert
-        assert cart_page.is_cart_item_displayed(), \
-            "Item not displayed in cart"
+        assert cart_page.is_cart_item_displayed()
 
     def test_click_checkout(self, cart_setup, cart_page):
         """Test checkout button navigation."""
@@ -35,8 +35,7 @@ class TestCartPage(BaseTest):
         
         # Assert
         self.logger.info("Verifying navigation to checkout page")
-        assert "checkout-step-one.html" in self.driver.current_url, \
-            "Not redirected to checkout page"
+        assert CheckoutPage.STEP_ONE_URL in self.driver.current_url
 
     def test_empty_cart(self, login_page, cart_page):
         """Test empty cart state."""
@@ -47,5 +46,4 @@ class TestCartPage(BaseTest):
         
         # Assert
         self.logger.info("Verifying cart is empty")
-        assert not cart_page.is_cart_item_displayed(), \
-            "Cart should be empty initially"
+        assert not cart_page.is_cart_item_displayed()

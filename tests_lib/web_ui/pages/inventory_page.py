@@ -7,7 +7,8 @@ class InventoryPage(BasePage):
     """Page object for inventory functionality."""
     locators = WebUIConfig.PAGES["inventory"]["locators"]
     constants = WebUIConfig.PAGES["inventory"]["constants"]
-    errors = WebUIConfig.COMMON["messages"]["errors"]["inventory"]
+    errors = WebUIConfig.COMMON["messages"]["errors"]["inventory"]    
+    INVENTORY_PATH = WebUIConfig.COMMON["paths"]["inventory"]
     
     # Page locators
     CART_LINK = (By.ID, locators["cart_link"])
@@ -16,7 +17,7 @@ class InventoryPage(BasePage):
     
     # Page constants
     PRODUCTS_TITLE_TEXT = constants["products_title_text"]
-    INVENTORY_PATH = WebUIConfig.COMMON["paths"]["inventory"]
+    PRODUCT_BACKPACK_NAME = constants["products"]["backpack_name"]
 
     def __init__(self, driver, logger):
         super().__init__(driver, logger)

@@ -8,6 +8,7 @@ class CheckoutPage(BasePage):
     """Page object for checkout process."""
     # Page URLs and messages
     locators = WebUIConfig.PAGES["checkout"]["locators"]
+    customer_data = WebUIConfig.PAGES["checkout"]["customer_data"]
     paths = WebUIConfig.COMMON["paths"]["checkout"]
     messages = WebUIConfig.COMMON["messages"]
     

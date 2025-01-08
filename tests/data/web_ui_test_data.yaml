@@ -53,6 +53,8 @@ web_ui_test_data:
         item_data_test: "add-to-cart-{name}"
       constants:
         products_title_text: "Products"
+        products: 
+          backpack_name: "Sauce Labs Backpack"   
 
     hidden_menu:
       locators:
@@ -69,6 +71,10 @@ web_ui_test_data:
         finish_button: "finish"
         complete_header: ".complete-header"
         error_message: "[data-test='error']"
+      customer_data:
+        first_name: "John"
+        last_name: "Doe"
+        postal_code: "12345"
 
     cart:
       locators:
