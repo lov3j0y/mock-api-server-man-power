@@ -4,13 +4,13 @@ from tests_lib.web_ui.base_test import BaseTest, WebUIConfig
 class TestHiddenMenu(BaseTest):
     """Test suite for hidden menu functionality."""
 
-    def test_open_menu(self, setup, hidden_menu_page):
+    def test_open_menu(self, login_page, hidden_menu_page):
         """Test that menu opens correctly."""
         self.logger.info("=== Starting test_open_menu ===")
         
         # Arrange
         self.logger.info("Setting up test environment")
-        setup()
+        login_page.login_as("valid_user")
         
         # Act
         self.logger.info("Opening hidden menu")
@@ -21,12 +21,12 @@ class TestHiddenMenu(BaseTest):
         assert hidden_menu_page.is_menu_open(), \
             "Menu did not open correctly"
 
-    def test_logout(self, setup, hidden_menu_page):
+    def test_logout(self, login_page, hidden_menu_page):
         """Test logout functionality."""
         
         # Arrange
         self.logger.info("Setting up test environment")
-        setup()
+        login_page.login_as("valid_user")
         
         # Act
         self.logger.info("Opening hidden menu")

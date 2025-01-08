@@ -28,36 +28,37 @@ class BaseTest:
         yield driver
         driver.quit()
         
-
-
-    @pytest.fixture
-    def setup(self, driver, pages):
-        """Setup test with driver and pages."""
-        self.driver = driver
-        self.pages = pages
-        return self.pages.get_login_page().login_as
-
     @pytest.fixture
     def pages(self, driver):
         """Create page factory."""
         return PageFactory(driver, self.logger)
 
     @pytest.fixture
-    def login_page(self, pages):
+    def login_page(self, driver, pages):
+        """Login page fixture with driver initialization."""
+        self.driver = driver
         return pages.get_login_page()
 
     @pytest.fixture
-    def inventory_page(self, pages):
+    def inventory_page(self, driver, pages):
+        """Inventory page fixture with driver initialization."""
+        self.driver = driver
         return pages.get_inventory_page()
 
     @pytest.fixture
-    def cart_page(self, pages):
+    def cart_page(self, driver, pages):
+        """Cart page fixture with driver initialization."""
+        self.driver = driver
         return pages.get_cart_page()
 
     @pytest.fixture
-    def checkout_page(self, pages):
+    def checkout_page(self, driver, pages):
+        """Checkout page fixture with driver initialization."""
+        self.driver = driver
         return pages.get_checkout_page()
 
     @pytest.fixture
-    def hidden_menu_page(self, pages):
+    def hidden_menu_page(self, driver, pages):
+        """Hidden menu page fixture with driver initialization."""
+        self.driver = driver
         return pages.get_hidden_menu_page()

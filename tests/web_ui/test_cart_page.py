@@ -6,10 +6,10 @@ class TestCartPage(BaseTest):
     """Test suite for shopping cart functionality."""
 
     @pytest.fixture
-    def cart_setup(self, setup, inventory_page):
+    def cart_setup(self, login_page, inventory_page):
         """Setup cart state with one item."""
         self.logger.info("=== Setting up cart test environment ===")
-        setup()
+        login_page.login_as("valid_user")
         self.logger.info("Adding item to cart")
         inventory_page.add_to_cart_by_index(0)
         self.logger.info("Navigating to cart")
@@ -38,12 +38,12 @@ class TestCartPage(BaseTest):
         assert "checkout-step-one.html" in self.driver.current_url, \
             "Not redirected to checkout page"
 
-    def test_empty_cart(self, setup, cart_page):
+    def test_empty_cart(self, login_page, cart_page):
         """Test empty cart state."""
         
         # Arrange
         self.logger.info("Setting up empty cart state")
-        setup()
+        login_page.login_as("valid_user")
         
         # Assert
         self.logger.info("Verifying cart is empty")

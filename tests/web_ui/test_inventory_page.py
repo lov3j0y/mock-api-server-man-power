@@ -6,24 +6,24 @@ class TestInventoryPage(BaseTest):
     
     PRODUCT_NAME = "Sauce Labs Backpack"
 
-    def test_inventory_display(self, setup, inventory_page):
+    def test_inventory_display(self, login_page, inventory_page):
         """Test that inventory items are displayed."""
                 
         # Arrange & Act
         self.logger.info("Setting up inventory page")
-        setup()
+        login_page.login_as("valid_user")
         
         # Assert
         self.logger.info("Verifying inventory items are displayed")
         assert inventory_page.is_inventory_displayed(), \
             "Inventory items are not displayed"
 
-    def test_add_to_cart_by_index(self, setup, inventory_page, cart_page):
+    def test_add_to_cart_by_index(self, login_page, inventory_page, cart_page):
         """Test adding item to cart by index."""
         
         # Arrange
         self.logger.info("Setting up inventory page")
-        setup()
+        login_page.login_as("valid_user")
         
         # Act
         self.logger.info("Adding first item to cart")
@@ -36,12 +36,12 @@ class TestInventoryPage(BaseTest):
         assert cart_page.is_cart_item_displayed(), \
             "Item was not added to cart"
 
-    def test_add_to_cart_by_name(self, setup, inventory_page):
+    def test_add_to_cart_by_name(self, login_page, inventory_page):
         """Test adding item to cart by name."""
         
         # Arrange
         self.logger.info("Setting up inventory page")
-        setup()
+        login_page.login_as("valid_user")
         
         # Act
         self.logger.info(f"Adding item '{self.PRODUCT_NAME}' to cart")

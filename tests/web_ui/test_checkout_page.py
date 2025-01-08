@@ -9,9 +9,9 @@ class TestCheckoutPage(BaseTest):
     POSTAL_CODE = "12345"
     
     @pytest.fixture
-    def checkout_setup(self, setup, inventory_page, cart_page):
+    def checkout_setup(self, login_page, inventory_page, cart_page):
         """Setup checkout state with item in cart."""
-        setup()
+        login_page.login_as("valid_user")
         self.logger.info("Adding item to cart")
         inventory_page.add_to_cart_by_index(0)
         self.logger.info("Navigating to cart")
