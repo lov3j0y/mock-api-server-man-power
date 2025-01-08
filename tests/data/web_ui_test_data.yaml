@@ -1,0 +1,15 @@
+web_ui_test_data:
+  credentials:
+    valid_user:
+      username: "standard_user"
+      password: "secret_sauce"
+    invalid_user:
+      username: "invalid_user"
+      password: "invalid_password"
+    locked_out_user:
+      username: "locked_out_user"
+      password: "secret_sauce"
+  messages:
+    errors:
+      locked_out: "Epic sadface: Sorry, this user has been locked out."
+      invalid_credentials: "Epic sadface: Username and password do not match any user in this service"

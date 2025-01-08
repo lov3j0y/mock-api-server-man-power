@@ -1,6 +1,5 @@
 from selenium.webdriver.common.by import By
 from tests_lib.web_ui.pages.base_page import BasePage
-from tests_lib.helpers.json_loader import JSONLoader
 from tests_lib.web_ui.config.web_ui_config import WebUIConfig
 
 class LoginPage(BasePage):
@@ -20,8 +19,7 @@ class LoginPage(BasePage):
 
     def login_as(self, user_type="valid_user"):
         """Login with predefined user type."""
-        credentials = JSONLoader().load_data("test_data_webui_credentials.json", "credentials")
-        user = credentials[user_type]
+        user = WebUIConfig.CREDENTIALS[user_type]
         self.driver.get(WebUIConfig.BASE_URL)
         return self.login(user["username"], user["password"])
 
@@ -36,7 +34,7 @@ class LoginPage(BasePage):
         except Exception as e:
             self.logger.error(f"Login failed: {str(e)}")
             return False
-
+        
     def input_username(self, username):
         """Enter username into login form."""
         self.logger.info(f"Entering username: {username}")
