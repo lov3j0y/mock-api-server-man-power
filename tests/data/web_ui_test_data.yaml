@@ -13,3 +13,44 @@ web_ui_test_data:
     errors:
       locked_out: "Epic sadface: Sorry, this user has been locked out."
       invalid_credentials: "Epic sadface: Username and password do not match any user in this service"
+  pages:
+    login:
+      locators:
+        username_field: "user-name"
+        password_field: "password"
+        login_button: "login-button"
+        error_message: ".error-message-container.error"
+    inventory:
+      locators:
+        cart_link: "shopping_cart_container"
+        inventory_items: ".inventory_item"
+        products_title: ".title"
+      constants:
+        products_title_text: "Products"
+        inventory_path: "inventory.html"
+    hidden_menu:
+      locators:
+        menu_button: ".bm-burger-button"
+        logout_button: "logout_sidebar_link"
+        menu_container: "bm-menu-wrap"
+    checkout:
+      locators:
+        first_name_field: "first-name"
+        last_name_field: "last-name"
+        postal_code_field: "postal-code"
+        continue_button: ".cart_button"
+        finish_button: "finish"
+        complete_header: ".complete-header"
+        error_message: "[data-test='error']"
+      constants:
+        step_one_url: "checkout-step-one.html"
+        step_two_url: "checkout-step-two.html"
+        success_message: "Thank you for your order!"
+      error_messages:
+        first_name: "Error: First Name is required"
+        last_name: "Error: Last Name is required"
+        postal_code: "Error: Postal Code is required"
+    cart:
+      locators:
+        cart_item: ".cart_item"
+        checkout_button: "checkout"

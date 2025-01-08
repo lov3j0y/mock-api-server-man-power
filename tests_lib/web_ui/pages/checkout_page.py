@@ -1,3 +1,4 @@
+from tests_lib.web_ui.config.web_ui_config import WebUIConfig
 from tests_lib.web_ui.pages.base_page import BasePage
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
@@ -5,25 +6,32 @@ from selenium.common.exceptions import TimeoutException
 
 class CheckoutPage(BasePage):
     """Page object for checkout process."""
-    STEP_ONE_URL = "checkout-step-one.html"
-    STEP_TWO_URL = "checkout-step-two.html"
-    SUCCESS_MESSAGE = "Thank you for your order!"
-    ERROR_MESSAGES = {
-        "first_name": "Error: First Name is required",
-        "last_name": "Error: Last Name is required",
-        "postal_code": "Error: Postal Code is required"
-    }
-
+    locators = WebUIConfig._test_data["pages"]["checkout"]["locators"]
+    constants = WebUIConfig._test_data["pages"]["checkout"]["constants"]
+    error_messages = WebUIConfig._test_data["pages"]["checkout"]["error_messages"]
+    
+    FIRST_NAME_FIELD = (By.ID, locators["first_name_field"])
+    LAST_NAME_FIELD = (By.ID, locators["last_name_field"])
+    POSTAL_CODE_FIELD = (By.ID, locators["postal_code_field"])
+    CONTINUE_BUTTON = (By.CSS_SELECTOR, locators["continue_button"])
+    FINISH_BUTTON = (By.ID, locators["finish_button"])
+    COMPLETE_HEADER = (By.CSS_SELECTOR, locators["complete_header"])
+    ERROR_MESSAGE = (By.CSS_SELECTOR, locators["error_message"])
+    
+    STEP_ONE_URL = constants["step_one_url"]
+    STEP_TWO_URL = constants["step_two_url"]
+    SUCCESS_MESSAGE = constants["success_message"]
+    ERROR_MESSAGES = error_messages
 
     def __init__(self, driver, logger):
         super().__init__(driver, logger)
-        self.first_name_field = (By.ID, "first-name")
-        self.last_name_field = (By.ID, "last-name")
-        self.postal_code_field = (By.ID, "postal-code")
-        self.continue_button = (By.CSS_SELECTOR, ".cart_button")
-        self.finish_button = (By.ID, "finish")
-        self.complete_header = (By.CSS_SELECTOR, ".complete-header")
-        self.error_message = (By.CSS_SELECTOR, "[data-test='error']")
+        self.first_name_field = self.FIRST_NAME_FIELD
+        self.last_name_field = self.LAST_NAME_FIELD
+        self.postal_code_field = self.POSTAL_CODE_FIELD
+        self.continue_button = self.CONTINUE_BUTTON
+        self.finish_button = self.FINISH_BUTTON
+        self.complete_header = self.COMPLETE_HEADER
+        self.error_message = self.ERROR_MESSAGE
 
     def fill_checkout_form(self, first_name, last_name, postal_code):
         """Fill all checkout form fields at once."""

@@ -1,16 +1,26 @@
+from tests_lib.web_ui.config.web_ui_config import WebUIConfig
 from tests_lib.web_ui.pages.base_page import BasePage
 from selenium.webdriver.common.by import By
 
 
 class InventoryPage(BasePage):
-    PRODUCTS_TITLE = "Products"
-    INVENTORY_PATH = "inventory.html"
+    """Page object for inventory functionality."""
+    locators = WebUIConfig._test_data["pages"]["inventory"]["locators"]
+    constants = WebUIConfig._test_data["pages"]["inventory"]["constants"]
     
+    CART_LINK = (By.ID, locators["cart_link"])
+    INVENTORY_ITEMS = (By.CSS_SELECTOR, locators["inventory_items"])
+    PRODUCTS_TITLE = (By.CSS_SELECTOR, locators["products_title"])
+    
+    PRODUCTS_TITLE_TEXT = constants["products_title_text"]
+    INVENTORY_PATH = constants["inventory_path"]
+
     def __init__(self, driver, logger):
         super().__init__(driver, logger)
-        self.cart_link = (By.CSS_SELECTOR, ".shopping_cart_link")
-        self.products_title = (By.CLASS_NAME, "title")
-        self.inventory_items = (By.CSS_SELECTOR, ".inventory_item")
+        self.cart_link = self.CART_LINK
+        self.inventory_items = self.INVENTORY_ITEMS
+        self.products_title = self.PRODUCTS_TITLE
+        self.logger.info("Inventory page initialized")
 
     def _validate_inventory_items(self):
         """Validates inventory items presence on the page."""

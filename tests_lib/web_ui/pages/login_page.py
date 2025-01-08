@@ -4,10 +4,12 @@ from tests_lib.web_ui.config.web_ui_config import WebUIConfig
 
 class LoginPage(BasePage):
     """Page object for login functionality."""
-    USERNAME_FIELD = (By.ID, "user-name")
-    PASSWORD_FIELD = (By.ID, "password")
-    LOGIN_BUTTON = (By.ID, "login-button")
-    ERROR_MESSAGE = (By.CSS_SELECTOR, ".error-message-container.error")
+    locators = WebUIConfig._test_data["pages"]["login"]["locators"]
+    
+    USERNAME_FIELD = (By.ID, locators["username_field"])
+    PASSWORD_FIELD = (By.ID, locators["password_field"])
+    LOGIN_BUTTON = (By.ID, locators["login_button"])
+    ERROR_MESSAGE = (By.CSS_SELECTOR, locators["error_message"])
 
     def __init__(self, driver, logger):
         super().__init__(driver, logger)

@@ -1,7 +1,5 @@
-from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from tests_lib.common.logger.base_logger import BaseLogger
 from tests_lib.web_ui.config.web_ui_config import WebUIConfig
 
 class BasePage:

@@ -1,3 +1,4 @@
+from tests_lib.web_ui.config.web_ui_config import WebUIConfig
 from tests_lib.web_ui.pages.base_page import BasePage
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
@@ -5,9 +6,11 @@ from selenium.common.exceptions import TimeoutException
 
 class HiddenMenuPage(BasePage):
     """Page object for the hidden menu functionality."""
-    MENU_BUTTON = (By.CSS_SELECTOR, ".bm-burger-button")
-    LOGOUT_BUTTON = (By.ID, "logout_sidebar_link")
-    MENU_CONTAINER = (By.CLASS_NAME, "bm-menu-wrap")
+    locators = WebUIConfig._test_data["pages"]["hidden_menu"]["locators"]
+    
+    MENU_BUTTON = (By.CSS_SELECTOR, locators["menu_button"])
+    LOGOUT_BUTTON = (By.ID, locators["logout_button"])
+    MENU_CONTAINER = (By.CLASS_NAME, locators["menu_container"])
     
     def __init__(self, driver, logger):
         super().__init__(driver, logger)
