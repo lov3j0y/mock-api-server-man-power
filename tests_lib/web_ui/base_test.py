@@ -15,12 +15,16 @@ from tests_lib.web_ui.config.web_ui_config import WebUIConfig
 
 class BaseTest:
     """Base class for UI tests with common setup."""
+        
     @pytest.fixture(autouse=True)
-    def setup_logger(self):
+    def setup_logger(self, request):
         """Setup method to initialize the logger."""
         log_manager = LogManager()
         self.logger = log_manager.get_logger(WebUIConfig.LOGGER_NAME, WebUIConfig.LOG_LEVEL)
+        test_name = request.node.name
+        self.logger.info(f"=== Starting test: {test_name} ===")
         yield self.logger
+        self.logger.info(f"=== Completed test: {test_name} ===\n")
         # Cleanup handlers to prevent duplication
         for handler in self.logger.handlers[:]:
             handler.close()
