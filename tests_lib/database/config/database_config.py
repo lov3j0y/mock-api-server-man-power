@@ -8,7 +8,7 @@ class DatabaseConfig:
     CONFIG_PATH = Path(__file__).resolve().parent / "database_config.yaml"
     
     _config = YAMLLoader().load_data(CONFIG_PATH)["database"]
-    _test_data = JSONLoader().load_data("test_data_database.json")
+    _test_data = JSONLoader().load_data("database_test_data.json")
     QUERIES = _test_data.get("queries", [])    
     
     # Logger Configuration
