@@ -3,13 +3,19 @@ from tests_lib.web_ui.pages.base_page import BasePage
 from tests_lib.web_ui.config.web_ui_config import WebUIConfig
 
 class LoginPage(BasePage):
-    """Page object for login functionality."""
+    """Page object for login functionality."""    
+    locators = WebUIConfig.PAGES["login"]["locators"]
+    messages = WebUIConfig.COMMON["messages"]["errors"]["login"]  
+      
     # Page Locators
-    locators = WebUIConfig.PAGES["login"]["locators"]    
     USERNAME_FIELD = (By.ID, locators["username_field"])
     PASSWORD_FIELD = (By.ID, locators["password_field"])
     LOGIN_BUTTON = (By.ID, locators["login_button"])
     ERROR_MESSAGE = (By.CSS_SELECTOR, locators["error_message"])
+    
+    # Error Messages
+    LOCKED_OUT_ERROR = messages["locked_out"]
+    INVALID_CREDENTIALS_ERROR = messages["invalid_credentials"]
 
     def __init__(self, driver, logger):
         super().__init__(driver, logger)

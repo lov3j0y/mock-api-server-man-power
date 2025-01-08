@@ -1,11 +1,10 @@
 from tests_lib.web_ui.base_test import BaseTest
+from tests_lib.web_ui.pages.inventory_page import InventoryPage
+from tests_lib.web_ui.pages.login_page import LoginPage
 
 
 class TestLoginPage(BaseTest):
     """Test suite for login page functionality."""
-    
-    LOCKED_OUT_ERROR = "Epic sadface: Sorry, this user has been locked out."
-    INVALID_CREDENTIALS_ERROR = "Epic sadface: Username and password do not match any user in this service"
 
     def test_login_with_valid_credentials(self, setup):
         """Test successful login with valid credentials."""
@@ -20,7 +19,7 @@ class TestLoginPage(BaseTest):
         
         # Assert
         self.logger.info("Verifying successful login navigation")
-        assert "inventory.html" in current_url
+        assert InventoryPage.INVENTORY_PATH in current_url
 
     def test_login_with_invalid_credentials(self, setup):
         """Test login failure with invalid credentials."""
@@ -35,7 +34,7 @@ class TestLoginPage(BaseTest):
         
         # Assert
         self.logger.info("Verifying error message for invalid credentials")
-        assert self.INVALID_CREDENTIALS_ERROR in error_message
+        assert LoginPage.INVALID_CREDENTIALS_ERROR in error_message
 
     def test_login_with_locked_out_user(self, setup):
         """Test login attempt with locked out user."""
@@ -50,4 +49,4 @@ class TestLoginPage(BaseTest):
         
         # Assert
         self.logger.info("Verifying locked out user error message")
-        assert self.LOCKED_OUT_ERROR in error_message
+        assert LoginPage.LOCKED_OUT_ERROR in error_message
