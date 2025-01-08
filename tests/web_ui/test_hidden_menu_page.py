@@ -20,7 +20,7 @@ class TestHiddenMenu(BaseTest):
         self.logger.info("Verifying menu is open")
         assert hidden_menu_page.is_menu_open(), \
             "Menu did not open correctly"
-        self.logger.info("=== Completed test_open_menu ===")
+        self.logger.info("=== Completed test_open_menu ===\n")
 
     def test_logout(self, setup, hidden_menu_page):
         """Test logout functionality."""
@@ -40,4 +40,4 @@ class TestHiddenMenu(BaseTest):
         self.logger.info("Verifying redirection to login page")
         assert self.driver.current_url == WebUIConfig.BASE_URL, \
             "User not redirected to login page after logout"
-        self.logger.info("=== Completed test_logout ===")
+        self.logger.info("=== Completed test_logout ===\n")

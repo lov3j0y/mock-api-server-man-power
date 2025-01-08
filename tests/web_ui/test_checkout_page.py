@@ -19,7 +19,7 @@ class TestCheckoutPage(BaseTest):
         inventory_page.click_cart_link()
         self.logger.info("Proceeding to checkout")
         cart_page.click_checkout()
-        self.logger.info("=== Checkout setup completed ===")
+        self.logger.info("=== Checkout setup completed ===\n")
 
     def test_checkout_page_loaded(self, checkout_setup, checkout_page):
         """Test that checkout page loads correctly."""
@@ -31,7 +31,7 @@ class TestCheckoutPage(BaseTest):
         # Assert
         assert checkout_page.is_page_loaded(), \
             "Checkout page did not load correctly"
-        self.logger.info("=== Completed test_checkout_page_loaded ===")
+        self.logger.info("=== Completed test_checkout_page_loaded ===\n")
 
     def test_continue_to_next_step(self, checkout_setup, checkout_page):
         """Test that user can continue to next checkout step."""
@@ -51,7 +51,7 @@ class TestCheckoutPage(BaseTest):
         self.logger.info("Verifying navigation to next checkout step")
         assert "checkout-step-two.html" in self.driver.current_url, \
             "Not redirected to next checkout step"
-        self.logger.info("=== Completed test_continue_to_next_step ===")
+        self.logger.info("=== Completed test_continue_to_next_step ===\n")
         
     def test_complete_checkout(self, checkout_setup, checkout_page):
         """Test complete checkout flow."""
@@ -75,7 +75,7 @@ class TestCheckoutPage(BaseTest):
         self.logger.info("Verifying checkout completion")
         assert checkout_page.is_checkout_complete(), \
             "Checkout was not completed successfully"
-        self.logger.info("=== Completed test_complete_checkout ===")
+        self.logger.info("=== Completed test_complete_checkout ===\n")
 
     def test_empty_form_validation(self, checkout_setup, checkout_page):
         """Test validation message for completely empty form."""
@@ -91,7 +91,7 @@ class TestCheckoutPage(BaseTest):
         # Assert
         self.logger.info("Verifying first name validation message")
         assert checkout_page.get_error_message() == checkout_page.ERROR_MESSAGES["first_name"]
-        self.logger.info("=== Completed test_empty_form_validation ===")
+        self.logger.info("=== Completed test_empty_form_validation ===\n")
 
     def test_missing_last_name_validation(self, checkout_setup, checkout_page):
         """Test validation message when only first name is provided."""
@@ -108,7 +108,7 @@ class TestCheckoutPage(BaseTest):
         # Assert
         self.logger.info("Verifying last name validation message")
         assert checkout_page.get_error_message() == checkout_page.ERROR_MESSAGES["last_name"]
-        self.logger.info("=== Completed test_missing_last_name_validation ===")
+        self.logger.info("=== Completed test_missing_last_name_validation ===\n")
 
     def test_missing_postal_code_validation(self, checkout_setup, checkout_page):
         """Test validation message when postal code is missing."""
@@ -126,4 +126,4 @@ class TestCheckoutPage(BaseTest):
         # Assert
         self.logger.info("Verifying postal code validation message")
         assert checkout_page.get_error_message() == checkout_page.ERROR_MESSAGES["postal_code"]
-        self.logger.info("=== Completed test_missing_postal_code_validation ===")
+        self.logger.info("=== Completed test_missing_postal_code_validation ===\n")

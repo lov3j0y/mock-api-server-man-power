@@ -26,7 +26,7 @@ class TestCartPage(BaseTest):
         # Assert
         assert cart_page.is_cart_item_displayed(), \
             "Item not displayed in cart"
-        self.logger.info("=== Completed test_cart_item_displayed ===")
+        self.logger.info("=== Completed test_cart_item_displayed ===\n")
 
     def test_click_checkout(self, cart_setup, cart_page):
         """Test checkout button navigation."""
@@ -40,7 +40,7 @@ class TestCartPage(BaseTest):
         self.logger.info("Verifying navigation to checkout page")
         assert "checkout-step-one.html" in self.driver.current_url, \
             "Not redirected to checkout page"
-        self.logger.info("=== Completed test_click_checkout ===")
+        self.logger.info("=== Completed test_click_checkout ===\n")
 
     def test_empty_cart(self, setup, cart_page):
         """Test empty cart state."""
@@ -54,4 +54,4 @@ class TestCartPage(BaseTest):
         self.logger.info("Verifying cart is empty")
         assert not cart_page.is_cart_item_displayed(), \
             "Cart should be empty initially"
-        self.logger.info("=== Completed test_empty_cart ===")
+        self.logger.info("=== Completed test_empty_cart ===\n")
