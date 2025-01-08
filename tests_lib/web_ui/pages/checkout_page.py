@@ -6,10 +6,12 @@ from selenium.common.exceptions import TimeoutException
 
 class CheckoutPage(BasePage):
     """Page object for checkout process."""
-    locators = WebUIConfig._test_data["pages"]["checkout"]["locators"]
-    constants = WebUIConfig._test_data["pages"]["checkout"]["constants"]
-    error_messages = WebUIConfig._test_data["pages"]["checkout"]["error_messages"]
+    # Page URLs and messages
+    locators = WebUIConfig.PAGES["checkout"]["locators"]
+    paths = WebUIConfig.COMMON["paths"]["checkout"]
+    messages = WebUIConfig.COMMON["messages"]
     
+    # Page locators
     FIRST_NAME_FIELD = (By.ID, locators["first_name_field"])
     LAST_NAME_FIELD = (By.ID, locators["last_name_field"])
     POSTAL_CODE_FIELD = (By.ID, locators["postal_code_field"])
@@ -18,11 +20,12 @@ class CheckoutPage(BasePage):
     COMPLETE_HEADER = (By.CSS_SELECTOR, locators["complete_header"])
     ERROR_MESSAGE = (By.CSS_SELECTOR, locators["error_message"])
     
-    STEP_ONE_URL = constants["step_one_url"]
-    STEP_TWO_URL = constants["step_two_url"]
-    SUCCESS_MESSAGE = constants["success_message"]
-    ERROR_MESSAGES = error_messages
-
+    # Page constants
+    STEP_ONE_URL = paths["step_one"]
+    STEP_TWO_URL = paths["step_two"]
+    SUCCESS_MESSAGE = messages["success"]["checkout"]
+    ERROR_MESSAGES = messages["errors"]["form"]
+    
     def __init__(self, driver, logger):
         super().__init__(driver, logger)
         self.first_name_field = self.FIRST_NAME_FIELD

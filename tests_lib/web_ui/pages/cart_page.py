@@ -6,8 +6,9 @@ from selenium.common.exceptions import TimeoutException
 
 class CartPage(BasePage):
     """Page object for the shopping cart page."""
-    locators = WebUIConfig._test_data["pages"]["cart"]["locators"]
+    locators = WebUIConfig.PAGES["cart"]["locators"]
     
+    # Page locators
     CART_ITEM = (By.CSS_SELECTOR, locators["cart_item"])
     CHECKOUT_BUTTON = (By.ID, locators["checkout_button"])
 

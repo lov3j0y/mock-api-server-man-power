@@ -4,8 +4,8 @@ from tests_lib.web_ui.config.web_ui_config import WebUIConfig
 
 class LoginPage(BasePage):
     """Page object for login functionality."""
-    locators = WebUIConfig._test_data["pages"]["login"]["locators"]
-    
+    # Page Locators
+    locators = WebUIConfig.PAGES["login"]["locators"]    
     USERNAME_FIELD = (By.ID, locators["username_field"])
     PASSWORD_FIELD = (By.ID, locators["password_field"])
     LOGIN_BUTTON = (By.ID, locators["login_button"])

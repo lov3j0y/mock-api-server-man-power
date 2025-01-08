@@ -10,12 +10,19 @@ class WebUIConfig:
     _config = YAMLLoader().load_data(CONFIG_PATH)["web_ui"]
     _test_data = YAMLLoader().load_data(TEST_DATA_PATH)["web_ui_test_data"]
     
+    # Browser and Driver Configuration
     BASE_URL = _config["base_url"]
     IMPLICIT_WAIT = _config["implicit_wait"]
     SELENIUM_HUB = _config["selenium_hub"]
-    LOGGER_NAME = _config["logger"]["name"]
-    LOG_LEVEL = LogLevel[_config["logger"]["level"]]
     BROWSER = _config["browser"]
     
+    # Logger Configuration
+    LOGGER_NAME = _config["logger"]["name"]
+    LOG_LEVEL = LogLevel[_config["logger"]["level"]]
+    
+    # Common Test Data
+    COMMON = _test_data["common"]
     CREDENTIALS = _test_data["credentials"]
-    ERROR_MESSAGES = _test_data["messages"]["errors"]
+    
+    # Page Specific Data
+    PAGES = _test_data["pages"]

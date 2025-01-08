@@ -1,4 +1,30 @@
 web_ui_test_data:
+  common:
+    paths:
+      inventory: "inventory.html"
+      checkout:
+        step_one: "checkout-step-one.html"
+        step_two: "checkout-step-two.html"
+    messages:
+      success:
+        checkout: "Thank you for your order!"
+      errors:
+        form:
+          first_name: "Error: First Name is required"
+          last_name: "Error: Last Name is required"
+          postal_code: "Error: Postal Code is required"
+        login:
+          locked_out: "Epic sadface: Sorry, this user has been locked out."
+          invalid_credentials: "Epic sadface: Username and password do not match any user in this service"
+        hidden_menu:
+          menu_not_accessible: "Menu is not accessible"
+          logout_not_accessible: "Logout button is not accessible"
+        inventory:
+          no_items: "No inventory items found on the page"
+          index_range: "Item index {index} is out of range."
+          item_in_cart: "Add to cart button not found for '{item}'. Item might be already in cart."
+          cart_inaccessible: "Cart link is not accessible. Please check if you're logged in."
+
   credentials:
     valid_user:
       username: "standard_user"
@@ -9,10 +35,7 @@ web_ui_test_data:
     locked_out_user:
       username: "locked_out_user"
       password: "secret_sauce"
-  messages:
-    errors:
-      locked_out: "Epic sadface: Sorry, this user has been locked out."
-      invalid_credentials: "Epic sadface: Username and password do not match any user in this service"
+
   pages:
     login:
       locators:
@@ -20,19 +43,23 @@ web_ui_test_data:
         password_field: "password"
         login_button: "login-button"
         error_message: ".error-message-container.error"
+
     inventory:
       locators:
         cart_link: "shopping_cart_container"
         inventory_items: ".inventory_item"
         products_title: ".title"
+        item_xpath: "(//div[contains(@class, 'inventory_item')])[{index}]//button[text()='Add to cart']"
+        item_data_test: "add-to-cart-{name}"
       constants:
         products_title_text: "Products"
-        inventory_path: "inventory.html"
+
     hidden_menu:
       locators:
         menu_button: ".bm-burger-button"
         logout_button: "logout_sidebar_link"
         menu_container: "bm-menu-wrap"
+
     checkout:
       locators:
         first_name_field: "first-name"
@@ -42,14 +69,7 @@ web_ui_test_data:
         finish_button: "finish"
         complete_header: ".complete-header"
         error_message: "[data-test='error']"
-      constants:
-        step_one_url: "checkout-step-one.html"
-        step_two_url: "checkout-step-two.html"
-        success_message: "Thank you for your order!"
-      error_messages:
-        first_name: "Error: First Name is required"
-        last_name: "Error: Last Name is required"
-        postal_code: "Error: Postal Code is required"
+
     cart:
       locators:
         cart_item: ".cart_item"

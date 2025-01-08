@@ -6,8 +6,9 @@ from selenium.common.exceptions import TimeoutException
 
 class HiddenMenuPage(BasePage):
     """Page object for the hidden menu functionality."""
-    locators = WebUIConfig._test_data["pages"]["hidden_menu"]["locators"]
+    locators = WebUIConfig.PAGES["hidden_menu"]["locators"]
     
+    # Page locators
     MENU_BUTTON = (By.CSS_SELECTOR, locators["menu_button"])
     LOGOUT_BUTTON = (By.ID, locators["logout_button"])
     MENU_CONTAINER = (By.CLASS_NAME, locators["menu_container"])

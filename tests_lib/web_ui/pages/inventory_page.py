@@ -5,15 +5,18 @@ from selenium.webdriver.common.by import By
 
 class InventoryPage(BasePage):
     """Page object for inventory functionality."""
-    locators = WebUIConfig._test_data["pages"]["inventory"]["locators"]
-    constants = WebUIConfig._test_data["pages"]["inventory"]["constants"]
+    locators = WebUIConfig.PAGES["inventory"]["locators"]
+    constants = WebUIConfig.PAGES["inventory"]["constants"]
+    errors = WebUIConfig.COMMON["messages"]["errors"]["inventory"]
     
+    # Page locators
     CART_LINK = (By.ID, locators["cart_link"])
     INVENTORY_ITEMS = (By.CSS_SELECTOR, locators["inventory_items"])
     PRODUCTS_TITLE = (By.CSS_SELECTOR, locators["products_title"])
     
+    # Page constants
     PRODUCTS_TITLE_TEXT = constants["products_title_text"]
-    INVENTORY_PATH = constants["inventory_path"]
+    INVENTORY_PATH = WebUIConfig.COMMON["paths"]["inventory"]
 
     def __init__(self, driver, logger):
         super().__init__(driver, logger)
@@ -25,27 +28,24 @@ class InventoryPage(BasePage):
     def _validate_inventory_items(self):
         """Validates inventory items presence on the page."""
         if not self.find_elements(self.inventory_items):
-            raise ValueError("No inventory items found. Please check if you're on the correct page.")
+            raise ValueError(self.errors["no_items"])
 
     def add_to_cart_by_index(self, item_index):
         """Adds an item to cart using its index."""
         inventory_items = self.find_elements(self.inventory_items)
         if not inventory_items:
-            raise ValueError("No inventory items found on the page")
+            raise ValueError(self.errors["no_items"])
         
         if not (0 <= item_index < len(inventory_items)):
-            raise IndexError(f"Item index {item_index} is out of range.")
+            raise IndexError(self.errors["index_range"].format(index=item_index))
 
         item_add_to_cart_button = (
             By.XPATH,
-            f"(//div[contains(@class, 'inventory_item')])[{item_index + 1}]//button[text()='Add to cart']"
+            self.locators["item_xpath"].format(index=item_index + 1)
         )
         
         if not self.find_elements(item_add_to_cart_button):
-            raise ValueError(
-                f"Add to cart button not found for item #{item_index + 1}. "
-                "Item might be already in cart."
-            )
+            raise ValueError(self.errors["item_in_cart"].format(item=f"#{item_index + 1}"))
             
         self.click(item_add_to_cart_button)
 
@@ -56,21 +56,18 @@ class InventoryPage(BasePage):
         formatted_name = product_name.lower().replace(" ", "-")
         item_add_to_cart_button = (
             By.CSS_SELECTOR,
-            f'[data-test="add-to-cart-{formatted_name}"]'
+            f'[data-test="{self.locators["item_data_test"].format(name=formatted_name)}"]'
         )
         
         if not self.find_elements(item_add_to_cart_button):
-            raise ValueError(
-                f"Add to cart button not found for '{product_name}'. "
-                "Item might be already in cart."
-            )
+            raise ValueError(self.errors["item_in_cart"].format(item=product_name))
             
         self.click(item_add_to_cart_button)
 
     def click_cart_link(self):
         """Navigates to cart page."""
         if not self.find_elements(self.cart_link):
-            raise ValueError("Cart link is not accessible. Please check if you're logged in.")
+            raise ValueError(self.errors["cart_inaccessible"])
             
         self.click(self.cart_link)
 
@@ -81,6 +78,6 @@ class InventoryPage(BasePage):
     def is_page_loaded(self):
         """Verifies if inventory page is loaded."""
         return (
-            self.get_text(self.products_title) == self.PRODUCTS_TITLE
+            self.get_text(self.products_title) == self.PRODUCTS_TITLE_TEXT
             and self.INVENTORY_PATH in self.driver.current_url
         )
